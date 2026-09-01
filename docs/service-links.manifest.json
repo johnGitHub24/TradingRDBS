@@ -1,0 +1,47 @@
+{
+  "project": "TradingRDBS",
+  "note": "同埠靜態 Vue；與 startup.info.*、StartupInfoLogger、index.html Demo 入口 card 保持同步",
+  "groups": [
+    {
+      "title": "後端 API / 工具",
+      "items": [
+        {
+          "label": "健康檢查",
+          "url": "http://localhost:8095/actuator/health",
+          "probe": true
+        },
+        {
+          "label": "Swagger UI",
+          "url": "http://localhost:8095/swagger-ui.html",
+          "probe": true
+        },
+        {
+          "label": "OpenAPI JSON",
+          "url": "http://localhost:8095/v3/api-docs",
+          "probe": false
+        },
+        {
+          "label": "H2 Console",
+          "url": "http://localhost:8095/h2-console",
+          "probe": true
+        }
+      ]
+    },
+    {
+      "title": "同埠靜態 Demo / L1",
+      "items": [
+        {
+          "label": "首頁 Demo（含 Demo 入口 card）",
+          "url": "http://localhost:8095/",
+          "probe": true
+        },
+        {
+          "label": "L1 UI Smoke Runner",
+          "url": "http://localhost:8095/test/runner.html",
+          "probe": true,
+          "hint": "RDBS-001～006"
+        }
+      ]
+    }
+  ]
+}

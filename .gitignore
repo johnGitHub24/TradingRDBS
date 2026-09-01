@@ -1,0 +1,16 @@
+﻿# All hidden files/dirs - local only (exception: this file)
+.*
+!.gitignore
+
+!.github/
+!.github/**
+build/
+out/
+bin/
+*.iml
+*.log
+hs_err_pid*.log
+replay_pid*.log
+bash.exe.stackdump
+Thumbs.db
+

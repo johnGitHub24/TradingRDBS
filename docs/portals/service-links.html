@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TradingRDBS — 服務驗證連結</title>
+  <style>
+    :root {
+      --bg: #0f1419; --surface: #1a2332; --surface2: #243044; --border: #2d3a4f;
+      --text: #e6edf3; --muted: #8b9cb3; --accent: #3b82f6; --ok: #10b981; --warn: #f59e0b; --bad: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", "Microsoft JhengHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+    header { border-bottom: 1px solid var(--border); background: var(--surface); padding: 1.25rem 1.5rem 0.85rem; }
+    header h1 { font-size: 1.35rem; margin-bottom: 0.25rem; }
+    header .sub { color: var(--muted); font-size: 0.88rem; max-width: 52rem; }
+    header .links { margin-top: 0.65rem; font-size: 0.82rem; }
+    header .links a { color: var(--accent); text-decoration: none; margin-right: 0.85rem; }
+    main { padding: 1.25rem 1.5rem 2.5rem; max-width: 960px; }
+    .gate { background: var(--surface2); border-left: 3px solid var(--accent); padding: 0.65rem 0.9rem; font-size: 0.85rem; margin-bottom: 1rem; color: var(--muted); }
+    h2 { font-size: 1.05rem; color: var(--ok); margin: 1.25rem 0 0.55rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-bottom: 0.75rem; background: var(--surface); }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--surface2); }
+    a { color: var(--accent); word-break: break-all; }
+    .badge { display: inline-block; font-size: 0.72rem; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); }
+    .badge.up { color: var(--ok); border-color: var(--ok); }
+    .badge.down { color: var(--bad); border-color: var(--bad); }
+    .badge.na { color: var(--muted); }
+    .actions { margin: 0.75rem 0 1rem; }
+    button { appearance: none; background: var(--accent); color: #fff; border: 1px solid var(--accent); border-radius: 6px; padding: 0.4rem 0.75rem; cursor: pointer; font-size: 0.85rem; }
+    button.secondary { background: var(--surface2); color: var(--text); border-color: var(--border); margin-left: 0.35rem; }
+    footer { padding: 0 1.5rem 1.5rem; color: var(--muted); font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TradingRDBS — 服務驗證連結</h1>
+    <p class="sub">VIEW 頁：快速點選各服務 URL 做 Demo／L0 驗證。探活權威仍為 Console <code>StartupInfoLogger</code>（JVM 端無 CORS 限制）。</p>
+    <p class="links">
+      <a href="../index.html">Docs 入口</a>
+      <a href="swagger.html">Swagger</a>
+      <a href="../testing.html">Testing</a>
+    </p>
+  </header>
+  <main>
+    <div class="gate">
+      <strong>成對原則：</strong>改 <code>startup.info.*</code> 或服務清單時，須同步更新
+      <code>docs/service-links.manifest.json</code> → 跑 <code>generate-service-links.ps1</code> → 有 Vue 時同步 <code>frontend/src/config/demoLinks.js</code>。
+    </div>
+    <div class="actions">
+      <button type="button" id="btn-probe">探測可達性（best-effort）</button>
+      <button type="button" id="btn-open-all" class="secondary">全部新分頁開啟</button>
+    </div>
+    <div id="groups"></div>
+  </main>
+  <footer>Generated from service-links.manifest.json · EOS demo-ready · 非權威契約</footer>
+  <script id="service-links-data" type="application/json">{"project":"TradingRDBS","note":"同埠靜態 Vue；與 startup.info.*、StartupInfoLogger、index.html Demo 入口 card 保持同步","groups":[{"title":"後端 API / 工具","items":[{"label":"健康檢查","url":"http://localhost:8095/actuator/health","probe":true},{"label":"Swagger UI","url":"http://localhost:8095/swagger-ui.html","probe":true},{"label":"OpenAPI JSON","url":"http://localhost:8095/v3/api-docs","probe":false},{"label":"H2 Console","url":"http://localhost:8095/h2-console","probe":true}]},{"title":"同埠靜態 Demo / L1","items":[{"label":"首頁 Demo（含 Demo 入口 card）","url":"http://localhost:8095/","probe":true},{"label":"L1 UI Smoke Runner","url":"http://localhost:8095/test/runner.html","probe":true,"hint":"RDBS-001～006"}]}]}</script>
+  <script>
+    const data = JSON.parse(document.getElementById("service-links-data").textContent || "{}");
+    const root = document.getElementById("groups");
+
+    function esc(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+    }
+
+    function render() {
+      root.innerHTML = "";
+      (data.groups || []).forEach((g, gi) => {
+        const h = document.createElement("h2");
+        h.textContent = g.title || "服務";
+        root.appendChild(h);
+        const table = document.createElement("table");
+        table.innerHTML = "<thead><tr><th>服務</th><th>URL</th><th>狀態</th><th>備註</th></tr></thead>";
+        const tbody = document.createElement("tbody");
+        (g.items || []).forEach((item, ii) => {
+          const id = "s-" + gi + "-" + ii;
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" + esc(item.label || "") + "</td>" +
+            '<td><a href="' + esc(item.url || "#") + '" target="_blank" rel="noopener" data-link-id="' + id + '">' + esc(item.url || "") + "</a></td>" +
+            '<td><span class="badge na" id="' + id + '-badge" data-probe="' + (item.probe ? "1" : "0") + '" data-url="' + esc(item.url || "") + '">' +
+            (item.probe ? "未探測" : "—") + "</span></td>" +
+            "<td>" + esc(item.hint || "") + "</td>";
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        root.appendChild(table);
+      });
+    }
+
+    async function probeOne(badge) {
+      if (badge.dataset.probe !== "1") return;
+      const url = badge.dataset.url;
+      badge.textContent = "…";
+      badge.className = "badge na";
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 1200);
+        await fetch(url, { mode: "no-cors", signal: ctrl.signal });
+        clearTimeout(t);
+        badge.textContent = "可連（opaque）";
+        badge.className = "badge up";
+      } catch (e) {
+        badge.textContent = "點連結驗證";
+        badge.className = "badge down";
+      }
+    }
+
+    document.getElementById("btn-probe").addEventListener("click", () => {
+      document.querySelectorAll("[id$='-badge']").forEach((b) => probeOne(b));
+    });
+
+    document.getElementById("btn-open-all").addEventListener("click", () => {
+      document.querySelectorAll("a[data-link-id]").forEach((a) => window.open(a.href, "_blank", "noopener"));
+    });
+
+    render();
+  </script>
+</body>
+</html>
