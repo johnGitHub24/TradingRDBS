@@ -9,10 +9,11 @@ param(
 
 . "$PSScriptRoot\smoke-utf8.ps1"
 $ErrorActionPreference = 'Stop'
-$projectRoot = Split-Path $PSScriptRoot -Parent
+$docsRoot = Split-Path $PSScriptRoot -Parent
+$projectRoot = Split-Path $docsRoot -Parent
 Set-Location $projectRoot
 
-$uiSmokeDir = Join-Path $PSScriptRoot 'ui-smoke'
+$uiSmokeDir = Join-Path $docsRoot 'ui-smoke'
 $script:bootJob = $null
 
 function Stop-BootJob {
@@ -25,7 +26,7 @@ function Stop-BootJob {
 
 try {
     if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-        throw 'Node.js required. Use .\docs\run-api-smoke.ps1 for API-only L1.'
+        throw 'Node.js required. Use .\docs\scripts\run-api-smoke.ps1 for API-only L1.'
     }
 
     $healthUrl = '{0}/actuator/health' -f $BaseUrl.TrimEnd('/')

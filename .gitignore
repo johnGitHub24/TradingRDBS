@@ -13,4 +13,5 @@ hs_err_pid*.log
 replay_pid*.log
 bash.exe.stackdump
 Thumbs.db
+node_modules/
 

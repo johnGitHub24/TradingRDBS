@@ -1,5 +1,6 @@
 package com.trading.rdbs.symbol;
 
+import com.trading.rdbs.support.RdbsTestFixtures;
 import com.trading.rdbs.symbol.domain.Symbol;
 import com.trading.rdbs.symbol.dto.SymbolRequest;
 import com.trading.rdbs.symbol.dto.SymbolResponse;
@@ -28,10 +29,7 @@ class SymbolServiceTest {
     @Test
     @DisplayName("RDBS-002 create symbol")
     void createSymbol_savesAndReturns() {
-        SymbolRequest request = new SymbolRequest();
-        request.setTicker("2330");
-        request.setCompanyName("TSMC");
-        request.setExchangeCode("TWSE");
+        SymbolRequest request = RdbsTestFixtures.loadDto("symbol", "RDBS-002-SUCCESS", SymbolRequest.class);
 
         given(symbolRepository.save(org.mockito.ArgumentMatchers.any(Symbol.class)))
                 .willAnswer(inv -> {

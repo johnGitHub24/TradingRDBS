@@ -10,7 +10,7 @@
 - Framework: Spring Boot 3.2 · Java 21 · JPA
 - DB: H2（dev/test）／PostgreSQL（prod）
 - optional-frontend: **yes**（同埠 Vue 3 靜態 `src/main/resources/static/`）
-- **Demo-ready：** `bootRun` → `docs/run-release-gate.ps1`；UI Smoke `/test/runner.html`
+- **Demo-ready：** `bootRun` → `docs/scripts/run-release-gate.ps1`；UI Smoke `/test/runner.html`
 - 驗證入口：`.\scripts\check.ps1`（`gradlew check`＝unit + integration）
 - 本機 Demo：IntelliJ／Gradle `bootRun`（**勿**對 `*Application` 綠箭頭）→ 見 EOS `intellij-bootRun-portable.md`、[`docs/IntelliJ-IDE-啟動設定.md`](docs/IntelliJ-IDE-啟動設定.md)
 

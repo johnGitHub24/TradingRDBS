@@ -9,7 +9,8 @@ param(
 
 . "$PSScriptRoot\smoke-utf8.ps1"
 $ErrorActionPreference = 'Stop'
-$projectRoot = Split-Path $PSScriptRoot -Parent
+$docsRoot = Split-Path $PSScriptRoot -Parent
+$projectRoot = Split-Path $docsRoot -Parent
 $here = $PSScriptRoot
 
 Write-Host '=== Release Gate (check + L1 Smoke) ===' -ForegroundColor Yellow

@@ -9,7 +9,8 @@
 | [TradingRDBS 規格書.md](TradingRDBS%20規格書.md) | 主規格 |
 | [docs/資料庫設計.md](docs/資料庫設計.md) | ER、3NF 說明、反模式對照 |
 | [docs/architecture.md](docs/architecture.md) | 分層架構 |
-| [docs/testing.md](docs/testing.md) | Case RDBS-001～006 |
+| [docs/testing.md](docs/testing.md) | Case RDBS-001～006、fixture、Smoke 腳本 |
+| [docs/scripts/README.md](docs/scripts/README.md) | Demo-ready／Release 腳本目錄 |
 | [docs/portals/service-links.html](docs/portals/service-links.html) | 服務連結（與 Console／Demo 入口同源） |
 | [CLAUDE.md](CLAUDE.md) | AI 薄規則 |
 
@@ -28,11 +29,11 @@
 ```powershell
 .\scripts\check.ps1
 # 終端 1：.\gradlew.bat bootRun
-.\docs\run-l0-smoke.ps1
-.\docs\run-smoke-l1.ps1
-.\docs\run-ui-smoke.ps1 -Headed
-.\docs\verify-runner-served.ps1
-.\docs\run-release-gate.ps1 -SkipCheck
+.\docs\scripts\run-l0-smoke.ps1
+.\docs\scripts\run-smoke-l1.ps1
+.\docs\scripts\run-ui-smoke.ps1 -Headed
+.\docs\scripts\verify-runner-served.ps1
+.\docs\scripts\run-release-gate.ps1 -SkipCheck
 ```
 
 ### Release Gate（真開埠）
@@ -42,7 +43,7 @@
 .\gradlew.bat bootRun
 
 # 終端 2
-.\docs\run-release-gate.ps1
+.\docs\scripts\run-release-gate.ps1
 ```
 
 | URL | 說明 |

@@ -7,6 +7,7 @@ import com.trading.rdbs.order.domain.Order;
 import com.trading.rdbs.order.domain.OrderSide;
 import com.trading.rdbs.order.dto.OrderRequest;
 import com.trading.rdbs.order.dto.OrderResponse;
+import com.trading.rdbs.support.RdbsTestFixtures;
 import com.trading.rdbs.symbol.SymbolRepository;
 import com.trading.rdbs.symbol.domain.Symbol;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,12 +63,7 @@ class OrderServiceTest {
         @Test
         @DisplayName("RDBS-003 create order: links account (1) and symbol (1) via FK")
         void createOrder_validRequest_returnsOrderResponse() {
-            OrderRequest request = new OrderRequest();
-            request.setAccountId(1L);
-            request.setSymbolId(10L);
-            request.setSide(OrderSide.BUY);
-            request.setQuantity(100);
-            request.setUnitPrice(new BigDecimal("580.0000"));
+            OrderRequest request = RdbsTestFixtures.loadDto("order", "RDBS-003-SUCCESS", OrderRequest.class);
 
             given(accountRepository.findById(1L)).willReturn(Optional.of(account));
             given(symbolRepository.findById(10L)).willReturn(Optional.of(symbol));
@@ -90,12 +86,7 @@ class OrderServiceTest {
         @Test
         @DisplayName("RDBS-006 404: account not found")
         void createOrder_missingAccount_throwsNotFound() {
-            OrderRequest request = new OrderRequest();
-            request.setAccountId(99L);
-            request.setSymbolId(10L);
-            request.setSide(OrderSide.BUY);
-            request.setQuantity(1);
-            request.setUnitPrice(new BigDecimal("1.0000"));
+            OrderRequest request = RdbsTestFixtures.loadDto("order", "RDBS-006-NOT-FOUND-ACCOUNT", OrderRequest.class);
 
             given(accountRepository.findById(99L)).willReturn(Optional.empty());
 

@@ -1,20 +1,16 @@
 package com.trading.rdbs.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trading.rdbs.account.dto.AccountRequest;
-import com.trading.rdbs.order.domain.OrderSide;
 import com.trading.rdbs.order.dto.OrderRequest;
-import com.trading.rdbs.symbol.dto.SymbolRequest;
+import com.trading.rdbs.support.RdbsTestFixtures;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -22,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * 【職責】REST 整合層；Case ID RDBS-001～006 與 OrderServiceTest 成對。
+ * 【技巧】Request body 自 {@code docs/test-data/} 載入，與單元層共用素材。
  */
 @Tag("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,13 +41,11 @@ class TradingRdbsIntegrationTest {
     @Order(1)
     @DisplayName("RDBS-001 create account: POST /api/v1/accounts")
     void createAccount_returns201() throws Exception {
-        AccountRequest request = new AccountRequest();
-        request.setAccountNo("ACC-TEST-001");
-        request.setOwnerName("Test User");
+        String body = RdbsTestFixtures.loadJson("account", "RDBS-001-INTEGRATION");
 
         MvcResult result = mockMvc.perform(post("/api/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(body))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accountNo").value("ACC-TEST-001"))
                 .andExpect(jsonPath("$.ownerName").value("Test User"))
@@ -64,14 +59,11 @@ class TradingRdbsIntegrationTest {
     @Order(2)
     @DisplayName("RDBS-002 create symbol: POST /api/v1/symbols")
     void createSymbol_returns201() throws Exception {
-        SymbolRequest request = new SymbolRequest();
-        request.setTicker("TEST");
-        request.setCompanyName("Test Corp");
-        request.setExchangeCode("TWSE");
+        String body = RdbsTestFixtures.loadJson("symbol", "RDBS-002-INTEGRATION");
 
         MvcResult result = mockMvc.perform(post("/api/v1/symbols")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(body))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.ticker").value("TEST"))
                 .andReturn();
@@ -83,12 +75,10 @@ class TradingRdbsIntegrationTest {
     @Order(3)
     @DisplayName("RDBS-003 create order: 1 account → N orders → 1 symbol")
     void createOrder_linksAccountAndSymbol() throws Exception {
-        OrderRequest request = new OrderRequest();
+        OrderRequest request = objectMapper.readValue(
+                RdbsTestFixtures.loadJson("order", "RDBS-003-BODY"), OrderRequest.class);
         request.setAccountId(seededAccountId);
         request.setSymbolId(seededSymbolId);
-        request.setSide(OrderSide.BUY);
-        request.setQuantity(10);
-        request.setUnitPrice(new BigDecimal("100.0000"));
 
         mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)

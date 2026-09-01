@@ -8,6 +8,7 @@ import com.trading.rdbs.common.ResourceNotFoundException;
 import com.trading.rdbs.order.OrderRepository;
 import com.trading.rdbs.order.domain.Order;
 import com.trading.rdbs.order.domain.OrderSide;
+import com.trading.rdbs.support.RdbsTestFixtures;
 import com.trading.rdbs.symbol.domain.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,9 +52,7 @@ class AccountServiceTest {
     @Test
     @DisplayName("RDBS-001 create account")
     void createAccount_savesAndReturns() {
-        AccountRequest request = new AccountRequest();
-        request.setAccountNo("ACC-NEW");
-        request.setOwnerName("New User");
+        AccountRequest request = RdbsTestFixtures.loadDto("account", "RDBS-001-SUCCESS", AccountRequest.class);
 
         given(accountRepository.save(org.mockito.ArgumentMatchers.any(Account.class)))
                 .willAnswer(inv -> {

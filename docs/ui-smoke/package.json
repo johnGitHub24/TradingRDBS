@@ -1,7 +1,7 @@
 {
   "name": "trading-rdbs-ui-smoke",
   "private": true,
-  "description": "Puppeteer for docs/run-ui-smoke.ps1",
+  "description": "Puppeteer for docs/scripts/run-ui-smoke.ps1",
   "dependencies": {
     "puppeteer": "24.42.0"
   }
