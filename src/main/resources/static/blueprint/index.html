@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TradingRDBS — 系統運作藍圖</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root { --bg:#0f1419; --surface:#1a2332; --border:#2d3a4f; --text:#e6edf3; --muted:#8b9cb3; --accent:#3b82f6; --ok:#10b981; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI","Microsoft JhengHei",sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); background: linear-gradient(135deg,#1e3a5f,#0f1419 70%); }
+    header h1 { font-size: 1.4rem; margin-bottom: .35rem; }
+    header p { color: var(--muted); font-size: .9rem; max-width: 52rem; }
+    nav { margin-top: .75rem; font-size: .85rem; }
+    nav a { color: var(--accent); margin-right: 1rem; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    main { padding: 1.25rem 1.5rem 2.5rem; max-width: 1100px; }
+    h2 { font-size: 1.1rem; color: var(--ok); margin: 1.25rem 0 .5rem; border-bottom: 1px solid var(--border); padding-bottom: .35rem; }
+    .blurb { color: #c9d4e3; font-size: .92rem; margin-bottom: .75rem; max-width: 52rem; }
+    .mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; overflow-x: auto; margin-bottom: 1rem; }
+    .note { font-size: .82rem; color: var(--muted); border-left: 3px solid var(--accent); padding: .5rem .75rem; background: #243044; margin-top: .5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TradingRDBS — 系統運作藍圖</h1>
+    <p>非權威 VIEW：快速理解 runtime、驗證分層與 Demo 路徑。契約以規格書／architecture.md 為準。</p>
+    <nav>
+      <a href="/">← 首頁 Demo</a>
+      <a href="/docs/portals/service-links.html" target="_blank" rel="noopener">服務驗證總表</a>
+      <a href="/test/runner.html">UI Smoke</a>
+      <a href="/swagger-ui.html" target="_blank" rel="noopener">Swagger</a>
+    </nav>
+  </header>
+  <main>
+    <h2 id="runtime">Runtime 總覽</h2>
+    <p class="blurb">Browser loads same-port Vue static; API calls go through JWT-secured REST.</p>
+    <div class="mermaid">
+flowchart LR
+  Browser["Browser / Vue static"] --> API["Spring Boot :8095"]
+  API --> Sec["JWT Filter"]
+  Sec --> Ctrl["REST Controllers"]
+  Ctrl --> Svc["Services"]
+  Svc --> Repo["JPA Repositories"]
+  Repo --> DB[("H2 / PostgreSQL")]
+    </div>
+
+    <h2 id="domain">領域／資料流（3NF）</h2>
+    <p class="blurb">Account(1) → Order(N) → Symbol(1)；OAuth 使用者（app_users）與交易帳戶（accounts）分離。</p>
+    <div class="mermaid">
+flowchart TB
+  subgraph auth [OAuth JWT]
+    U[app_users] --> JWT[JwtTokenProvider]
+  end
+  subgraph domain [3NF]
+    A[accounts] --> O[orders]
+    S[symbols] --> O
+  end
+  Browser --> JWT
+  JWT --> API["/api/v1/*"]
+  API --> domain
+    </div>
+
+    <h2 id="verify">驗證分層</h2>
+    <div class="mermaid">
+flowchart TB
+  L0["L0 health + demo-entry"] --> L1["L1 API/UI Smoke"]
+  L1 --> Check["scripts/check.ps1"]
+  Check --> Unit["Unit tests"]
+  Check --> IT["Integration tests"]
+  IT --> Optional["Optional: CodeNarc / Sonar / Locust"]
+    </div>
+
+    <h2 id="obs">觀測／壓測（可選）</h2>
+    <p class="blurb">多數教學單服務倉預設不啟 Grafana/Prometheus/Locust；需時見 Header「系統檢測」Panel 或 FinTechDemo 全棧。</p>
+    <div class="mermaid">
+flowchart LR
+  App["App metrics"] -. optional .-> Prom[Prometheus]
+  Prom -. optional .-> Graf[Grafana]
+  Load[Locust] -. optional .-> App
+    </div>
+
+    <p class="note">維護：改架構時同步更新本頁 Mermaid + docs/service-links.manifest.json + Console StartupInfoLogger。</p>
+  </main>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  </script>
+</body>
+</html>
+

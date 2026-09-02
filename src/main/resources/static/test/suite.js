@@ -1,5 +1,5 @@
 /**
- * TradingRDBS L1 UI Smoke — RDBS-001～006（純 fetch，無 Vue）。
+ * TradingRDBS L1 UI Smoke — AUTH + RDBS-001～006（純 fetch，無 Vue）。
  */
 const API = '/api/v1';
 
@@ -39,6 +39,24 @@ async function runCase(caseId, name, fn) {
     return entry;
 }
 
+async function loginDemo(logs) {
+    const res = await fetch(`${API}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: 'demo', password: 'demo123' })
+    });
+    const data = await res.json();
+    if (res.status !== 200 || !data.token) {
+        throw new Error('login failed HTTP ' + res.status);
+    }
+    logs.push('token=' + data.token.slice(0, 12) + '...');
+    return data.token;
+}
+
+function authHeaders(token, extra = {}) {
+    return { Authorization: `Bearer ${token}`, ...extra };
+}
+
 async function runTests() {
     if (runBtn.disabled) return;
     runBtn.disabled = true;
@@ -47,15 +65,24 @@ async function runTests() {
     runBtn.textContent = 'TESTING...';
     runBtn.className = 'btn btn-lg w-100 mb-4 btn-run btn-secondary';
 
+    let bearerToken;
     let accountId;
     let symbolId;
     const suffix = Date.now().toString(36);
 
     const cases = [
+        ['AUTH-001', 'POST /auth/login 取得 JWT', async (logs) => {
+            bearerToken = await loginDemo(logs);
+        }],
+        ['AUTH-002', 'GET /accounts 無 token → 401', async (logs) => {
+            const res = await fetch(`${API}/accounts`);
+            if (res.status !== 401) throw new Error('expected 401 got ' + res.status);
+            logs.push('401 OK');
+        }],
         ['RDBS-001', 'POST /accounts 建立帳戶', async (logs) => {
             const res = await fetch(`${API}/accounts`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(bearerToken, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify({ accountNo: `SMK-${suffix}`, ownerName: 'Smoke User' })
             });
             const data = await res.json();
@@ -66,7 +93,7 @@ async function runTests() {
         ['RDBS-002', 'POST /symbols 建立標的', async (logs) => {
             const res = await fetch(`${API}/symbols`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(bearerToken, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
                     ticker: `T${suffix}`.slice(0, 16),
                     companyName: 'Smoke Corp',
@@ -81,7 +108,7 @@ async function runTests() {
         ['RDBS-003', 'POST /orders 1→N→1 連結', async (logs) => {
             const res = await fetch(`${API}/orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(bearerToken, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
                     accountId, symbolId, side: 'BUY', quantity: 10, unitPrice: 100.0
                 })
@@ -94,7 +121,9 @@ async function runTests() {
             logs.push('orderId=' + data.id);
         }],
         ['RDBS-004', 'GET /accounts/{id} 含 orders', async (logs) => {
-            const res = await fetch(`${API}/accounts/${accountId}`);
+            const res = await fetch(`${API}/accounts/${accountId}`, {
+                headers: authHeaders(bearerToken)
+            });
             const data = await res.json();
             if (res.status !== 200) throw new Error('HTTP ' + res.status);
             if (!Array.isArray(data.orders) || data.orders.length < 1) {
@@ -103,20 +132,24 @@ async function runTests() {
             logs.push('orders.length=' + data.orders.length);
         }],
         ['RDBS-005', 'GET /orders?symbolId= N→1', async (logs) => {
-            const res = await fetch(`${API}/orders?symbolId=${symbolId}`);
+            const res = await fetch(`${API}/orders?symbolId=${symbolId}`, {
+                headers: authHeaders(bearerToken)
+            });
             const data = await res.json();
             if (res.status !== 200) throw new Error('HTTP ' + res.status);
             if (!data.length) throw new Error('no orders for symbol');
             logs.push('count=' + data.length);
         }],
         ['RDBS-006', 'GET /accounts/999999 → 404', async (logs) => {
-            const res = await fetch(`${API}/accounts/999999`);
+            const res = await fetch(`${API}/accounts/999999`, {
+                headers: authHeaders(bearerToken)
+            });
             if (res.status !== 404) throw new Error('expected 404 got ' + res.status);
             logs.push('404 OK');
         }],
         ['RDBS-SEED', '種子資料 ≥2 帳戶 ≥3 標的', async (logs) => {
-            const acc = await fetch(`${API}/accounts`).then(r => r.json());
-            const sym = await fetch(`${API}/symbols`).then(r => r.json());
+            const acc = await fetch(`${API}/accounts`, { headers: authHeaders(bearerToken) }).then(r => r.json());
+            const sym = await fetch(`${API}/symbols`, { headers: authHeaders(bearerToken) }).then(r => r.json());
             if (acc.length < 2) throw new Error('accounts < 2');
             if (sym.length < 3) throw new Error('symbols < 3');
             logs.push('accounts=' + acc.length + ' symbols=' + sym.length);

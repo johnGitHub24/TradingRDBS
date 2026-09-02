@@ -22,12 +22,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
@@ -54,11 +59,85 @@ tasks.named('check') {
     dependsOn tasks.named('integrationTest')
 }
 
-springBoot {
-    mainClass = 'com.trading.rdbs.TradingRdbsApplication'
+/**
+ * 【職責】產出 docs/javadoc（EOS 必跑靜態頁；對齊 FinTechDemo aggregateJavadoc）。
+ * 【技巧】failOnError false 避免 doclint 擋住 check；產物由 sync-demo-static-artifacts 複製到 static。
+ */
+tasks.register('aggregateJavadoc', Javadoc) {
+    group = 'documentation'
+    description = 'Generate JavaDoc HTML into docs/javadoc'
+    dependsOn tasks.named('classes')
+    source = sourceSets.main.allJava
+    classpath = files(sourceSets.main.compileClasspath, sourceSets.main.output)
+    destinationDir = file("${rootDir}/docs/javadoc")
+    title = "TradingRDBS ${version} API"
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.links('https://docs.oracle.com/en/java/javase/21/docs/api/')
+    failOnError = false
 }
 
-tasks.named('bootRun') {
+/**
+ * 【職責】把 Javadoc／Gradle HTML 測試報告覆寫進 bootRun classpath（避免 404）。
+ * 【技巧】優先 build/reports；無則 fallback src；check 後須執行本 task 或 bootRun（會自動依賴）。
+ */
+tasks.register('syncDemoStaticToClasspath') {
+    group = 'documentation'
+    description = 'Mirror Javadoc + test HTML into build/resources/main/static/docs for bootRun'
+
+    doLast {
+        def classpathDocs = file("${layout.buildDirectory.get().asFile}/resources/main/static/docs")
+        def srcDocs = file('src/main/resources/static/docs')
+
+        def mirrorTree = { File sourceDir, File dest ->
+            if (sourceDir == null || !sourceDir.exists() || !new File(sourceDir, 'index.html').exists()) {
+                return false
+            }
+            if (dest.exists()) {
+                dest.deleteDir()
+            }
+            dest.mkdirs()
+            copy {
+                from sourceDir
+                into dest
+            }
+            true
+        }
+
+        def javadocSrc = file('docs/javadoc')
+        if (mirrorTree(javadocSrc, new File(classpathDocs, 'javadoc'))) {
+            mirrorTree(javadocSrc, new File(srcDocs, 'javadoc'))
+        }
+
+        def unitBuild = file('build/reports/tests/test')
+        def unitSrc = new File(srcDocs, 'reports/unit')
+        def unitFrom = (unitBuild.exists() && new File(unitBuild, 'index.html').exists()) ? unitBuild : unitSrc
+        if (mirrorTree(unitFrom, new File(classpathDocs, 'reports/unit'))) {
+            if (unitBuild.exists() && new File(unitBuild, 'index.html').exists()) {
+                mirrorTree(unitBuild, new File(srcDocs, 'reports/unit'))
+            }
+        }
+
+        def intBuild = file('build/reports/tests/integrationTest')
+        def intSrc = new File(srcDocs, 'reports/integration')
+        def intFrom = (intBuild.exists() && new File(intBuild, 'index.html').exists()) ? intBuild : intSrc
+        if (mirrorTree(intFrom, new File(classpathDocs, 'reports/integration'))) {
+            if (intBuild.exists() && new File(intBuild, 'index.html').exists()) {
+                mirrorTree(intBuild, new File(srcDocs, 'reports/integration'))
+            }
+        }
+    }
+}
+
+tasks.named('syncDemoStaticToClasspath').configure {
+    dependsOn tasks.named('processResources')
+}
+
+tasks.named('bootRun').configure {
+    dependsOn tasks.named('processResources')
+    dependsOn tasks.named('syncDemoStaticToClasspath')
     group = 'application'
     description = 'Run backend at http://localhost:8095'
     jvmArgs = [
@@ -68,4 +147,8 @@ tasks.named('bootRun') {
             '-Dsun.stdout.encoding=UTF-8',
             '-Dsun.stderr.encoding=UTF-8'
     ]
+}
+
+springBoot {
+    mainClass = 'com.trading.rdbs.TradingRdbsApplication'
 }

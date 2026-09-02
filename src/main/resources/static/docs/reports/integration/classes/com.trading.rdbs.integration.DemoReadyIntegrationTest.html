@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Demo-ready static (SVP + blueprint)</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Demo-ready static (SVP + blueprint)</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.trading.rdbs.integration.html">com.trading.rdbs.integration</a> &gt; DemoReadyIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">8</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.284s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">SVP-DEMO-004 /blueprint/index.html serves Mermaid page</td>
+<td class="success">blueprintIndex_ok()</td>
+<td class="success">0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-003 /blueprint/ redirects to index.html</td>
+<td class="success">blueprintSlash_redirects()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-005 index.html includes SVP mount and blueprint link</td>
+<td class="success">homeIncludesSvpHeader()</td>
+<td class="success">0.140s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-008 /docs/reports/integration/ redirects to index.html</td>
+<td class="success">integrationReportRedirect_ok()</td>
+<td class="success">0.027s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-001 service-links.manifest.json is public</td>
+<td class="success">serviceLinksManifest_ok()</td>
+<td class="success">0.029s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-002 service-verification-panel.js is public</td>
+<td class="success">serviceVerificationPanelJs_ok()</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-006 test-reports hub FinTechDemo style</td>
+<td class="success">testReportsHub_ok()</td>
+<td class="success">0.026s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">SVP-DEMO-007 /docs/reports/unit/ redirects to index.html</td>
+<td class="success">unitReportRedirect_ok()</td>
+<td class="success">0.013s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2026-09-02T11:31:57.226+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.trading.rdbs.integration.DemoReadyIntegrationTest]: DemoReadyIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-02T11:31:57.242+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.trading.rdbs.TradingRdbsApplication for test class com.trading.rdbs.integration.DemoReadyIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.2)
+
+2026-09-02T11:31:57.375+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] c.t.r.i.DemoReadyIntegrationTest         : Starting DemoReadyIntegrationTest using Java 21.0.12 with PID 32824 (started by Peng in D:\SouceDemo\RemoteSpringBoot\TradingRDBS)
+2026-09-02T11:31:57.376+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] c.t.r.i.DemoReadyIntegrationTest         : The following 1 profile is active: &quot;test&quot;
+2026-09-02T11:31:58.275+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02T11:31:58.344+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 63 ms. Found 4 JPA repository interfaces.
+2026-09-02T11:31:58.731+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02T11:31:58.739+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-02T11:31:58.750+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02T11:31:58.754+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-09-02T11:31:58.762+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:rdbs user=SA
+2026-09-02T11:31:58.763+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-09-02T11:31:59.041+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02T11:31:59.086+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02T11:31:59.792+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-09-02T11:32:00.083+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2026-09-02T11:32:00.168+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@590201fb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a972f52, org.springframework.security.web.context.SecurityContextHolderFilter@78f7e773, org.springframework.security.web.header.HeaderWriterFilter@5a405b0f, org.springframework.web.filter.CorsFilter@6204fbc1, org.springframework.security.web.authentication.logout.LogoutFilter@6608c8d5, com.trading.rdbs.auth.security.JwtAuthenticationFilter@26be15d7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5125f46e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6584b606, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@15f0d80f, org.springframework.security.web.session.SessionManagementFilter@3b901294, org.springframework.security.web.access.ExceptionTranslationFilter@5df0e5f0, org.springframework.security.web.access.intercept.AuthorizationFilter@752ac39a]
+2026-09-02T11:32:00.879+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:rdbs'
+2026-09-02T11:32:00.982+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-02T11:32:00.983+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-02T11:32:00.984+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-02T11:32:01.038+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] c.t.r.i.DemoReadyIntegrationTest         : Started DemoReadyIntegrationTest in 3.775 seconds (process running for 21.941)
+2026-09-02T11:32:01.074+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] com.trading.rdbs.config.DataSeeder       : DataSeeder: data exists, skip.
+2026-09-02T11:32:01.079+08:00  INFO 32824 --- [trading-rdbs] [    Test worker] com.trading.rdbs.config.AuthDataSeeder   : AuthDataSeeder: users exist, skip.
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.5</a> at 2026年9月2日 上午11:32:02</p>
+</div>
+</div>
+</body>
+</html>

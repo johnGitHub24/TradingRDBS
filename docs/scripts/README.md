@@ -4,7 +4,7 @@ Pure 入口仍在專案根 `scripts/check.ps1`；本目錄放 Demo-ready Smoke�
 
 | 腳本 | 用途 |
 |------|------|
-| `run-l0-smoke.ps1` | L0：health、UI、demo-entry、runner |
+| `run-l0-smoke.ps1` | L0：health、UI、demo-entry、**SVP／藍圖**、runner |
 | `run-api-smoke.ps1` | L1 API 劇情（RDBS-001～006） |
 | `run-ui-smoke.ps1` | L1 UI（Puppeteer／fetch fallback） |
 | `run-smoke-l1.ps1` | L0 + API + UI 編排 |

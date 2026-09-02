@@ -7,7 +7,7 @@
 ## 與公版差異
 
 - Backend port: **8095**
-- Framework: Spring Boot 3.2 · Java 21 · JPA
+- Framework: Spring Boot 3.2 · Java 21 · JPA · **Spring Security（OAuth Bearer JWT）**
 - DB: H2（dev/test）／PostgreSQL（prod）
 - optional-frontend: **yes**（同埠 Vue 3 靜態 `src/main/resources/static/`）
 - **Demo-ready：** `bootRun` → `docs/scripts/run-release-gate.ps1`；UI Smoke `/test/runner.html`
@@ -17,8 +17,8 @@
 ## 本專案專屬
 
 - Domain: **第三正規化（3NF）** 關聯模型 — Account(1) → Order(N) → Symbol(1)
-- Case：RDBS-001～006（單元＋整合成對）
-- 架構：`docs/architecture.md`；DB：`docs/資料庫設計.md`；測試：`docs/testing.md`
+- Case：RDBS-001～006、AUTH-001～003（單元＋整合成對）
+- 架構：`docs/architecture.md`；DB：`docs/資料庫設計.md`；測試：`docs/testing.md`；驗證：`docs/驗證設計.md`
 
 ## 註解深度
 - comment_verbosity: **detailed**

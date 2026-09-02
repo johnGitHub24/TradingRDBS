@@ -7,52 +7,443 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    body { background: #0f1419; color: #e6edf3; }
-    .card { background: #1a2332; border-color: #2d3a4f; color: #e6edf3; }
-    .card-header { background: #243044; border-color: #2d3a4f; }
-    .form-control, .form-select { background: #0f1419; color: #e6edf3; border-color: #2d3a4f; }
-    .table { color: #e6edf3; }
-    .table-light th { background: #243044; color: #e6edf3; border-color: #2d3a4f; }
-    .muted { color: #8b9cb3; }
-    .rel-box { border: 1px dashed #3d5166; border-radius: 8px; padding: 12px; font-family: monospace; }
-    tr.selected { background: #243044 !important; }
-    .badge-buy { background: #10b981; }
-    .badge-sell { background: #f59e0b; color: #111; }
-    .link-grid a { color: #58a6ff; text-decoration: none; }
-    .link-grid a:hover { text-decoration: underline; }
-    .link-grid li { margin-bottom: 0.35rem; }
-    .badge-up { background: #10b981; color: #0f1419; font-size: 0.7rem; }
+    /* EOS light theme — SSOT palette aligned with FinTechDemo test-reports */
+    :root {
+      --eos-bg: #f5f7fa;
+      --eos-surface: #ffffff;
+      --eos-surface2: #eef2f6;
+      --eos-border: #d5dde6;
+      --eos-text-strong: #111827;
+      --eos-text: #334155;
+      --eos-text-label: #374151;
+      --eos-muted: #64748b;
+      --eos-accent: #0d7377;
+      --eos-accent-hover: #095a5d;
+      --eos-accent-soft: #e6f3f2;
+      --eos-success: #059669;
+      --eos-success-soft: #d1fae5;
+      --eos-warn: #b45309;
+      --eos-warn-soft: #fef3c7;
+      --eos-danger: #b91c1c;
+      --eos-danger-soft: #fee2e2;
+      --eos-btn-on-accent: #ffffff;
+      --eos-btn-ghost: #475569;
+      --bs-primary: #0d7377;
+      --bs-primary-rgb: 13, 115, 119;
+      --bs-success: #059669;
+      --bs-success-rgb: 5, 150, 105;
+      --bs-info: #0d7377;
+      --bs-info-rgb: 13, 115, 119;
+      --bs-warning: #d97706;
+      --bs-warning-rgb: 217, 119, 6;
+      --bs-secondary: #64748b;
+      --bs-secondary-rgb: 100, 116, 139;
+      --bs-link-color: #0d7377;
+      --bs-link-hover-color: #095a5d;
+      --bs-border-color: #d5dde6;
+      --bs-body-bg: #f5f7fa;
+      --bs-body-color: #334155;
+      --bs-btn-focus-box-shadow: 0 0 0 0.2rem rgba(13, 115, 119, 0.2);
+    }
+    body {
+      background: var(--eos-bg);
+      color: var(--eos-text);
+      font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+      line-height: 1.55;
+    }
+    h1, h2, h3, .h3 { color: var(--eos-text-strong); font-weight: 600; }
+    p, .card-body { color: var(--eos-text); }
+    .form-label {
+      color: var(--eos-text-label);
+      font-weight: 500;
+      font-size: 0.875rem;
+      margin-bottom: 0.35rem;
+    }
+    .muted, .text-muted { color: var(--eos-muted) !important; }
+    .small, small { color: var(--eos-muted); }
+    code {
+      background: var(--eos-surface2);
+      color: #0f4c5c;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+    table code { color: #0d5c5f; font-weight: 500; }
+    .link-grid strong { color: var(--eos-text-strong); font-weight: 600; }
+
+    /* Demo 入口卡 — 服務連結區（高對比） */
+    .demo-entry-card .card-body {
+      font-size: 0.95rem;
+      padding: 1rem 1.15rem;
+    }
+    .link-grid-section-title {
+      color: var(--eos-accent-hover);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.65rem !important;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--eos-accent);
+    }
+    .link-grid a {
+      color: #0a5c60;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+    .link-grid a:hover {
+      color: #074548;
+      text-decoration: underline;
+    }
+    .link-grid a strong {
+      color: #074548;
+      font-weight: 700;
+    }
+    .link-grid a .link-path {
+      color: var(--eos-text-label);
+      font-weight: 500;
+      font-size: 0.88em;
+      margin-left: 0.15rem;
+    }
+    .link-grid a:hover .link-path { color: var(--eos-accent-hover); }
+    .link-grid li {
+      margin-bottom: 0.45rem;
+      padding: 0.3rem 0.45rem;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+    .link-grid li:hover { background: var(--eos-accent-soft); }
+    .link-grid .link-hint {
+      color: var(--eos-text-label);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .link-grid .link-note {
+      color: var(--eos-text);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      margin-top: 0.5rem;
+    }
+    .link-grid .link-hint code {
+      color: #0a5c60;
+      background: #e6f3f2;
+      border: 1px solid #b8e0e2;
+      font-weight: 700;
+    }
+    .badge-up {
+      background: #059669;
+      color: #ffffff;
+      border: 1px solid #047857;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    /* Demo 入口卡外框 */
+    .demo-entry-card {
+      border: 1px solid var(--eos-border);
+      border-left: 4px solid var(--eos-accent);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+    .demo-entry-card .card-header {
+      background: linear-gradient(135deg, var(--eos-accent-soft) 0%, var(--eos-surface2) 55%, var(--eos-surface) 100%);
+      border-color: var(--eos-border);
+      color: var(--eos-text-strong);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* 卡片／表單 */
+    .card {
+      background: var(--eos-surface);
+      border-color: var(--eos-border);
+      color: var(--eos-text);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .card-header {
+      background: var(--eos-surface2);
+      border-color: var(--eos-border);
+      color: var(--eos-text-strong);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .form-control, .form-select {
+      background: var(--eos-surface);
+      color: var(--eos-text);
+      border-color: var(--eos-border);
+    }
+    .form-control::placeholder {
+      color: #94a3b8;
+      opacity: 1;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--eos-accent);
+      box-shadow: 0 0 0 0.2rem rgba(13, 115, 119, 0.15);
+      color: var(--eos-text-strong);
+    }
+    .table { color: var(--eos-text); }
+    .table-light th {
+      background: var(--eos-surface2);
+      color: var(--eos-text-label);
+      font-weight: 600;
+      border-color: var(--eos-border);
+    }
+    .table tbody tr:hover { background: #f8fafc; }
+    tr.selected { background: var(--eos-accent-soft) !important; }
+    .rel-box {
+      border: 1px dashed #c5d0dc;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: monospace;
+      background: var(--eos-surface);
+      color: var(--eos-muted);
+    }
+    .badge-buy {
+      background: var(--eos-success-soft);
+      color: #065f46;
+      font-weight: 600;
+    }
+    .badge-sell {
+      background: var(--eos-warn-soft);
+      color: #92400e;
+      font-weight: 600;
+    }
+    .badge-user {
+      background: var(--eos-accent-soft);
+      color: var(--eos-accent-hover);
+      border: 1px solid #99d5d7;
+      font-weight: 600;
+    }
+
+    /* 按鈕文字（淺色底對比） */
+    .btn {
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .btn-toolbar-eos {
+      border: 1px solid #7ec8cb;
+      background: #f0faf9;
+      color: var(--eos-accent-hover);
+      font-weight: 600;
+    }
+    .btn-toolbar-eos:hover,
+    .btn-toolbar-eos:focus,
+    .btn-toolbar-eos:active {
+      border-color: var(--eos-accent);
+      background: var(--eos-accent-soft);
+      color: #074548;
+      box-shadow: 0 1px 4px rgba(13, 115, 119, 0.2);
+    }
+    .btn-toolbar-eos:disabled {
+      color: #94a3b8;
+      background: var(--eos-surface2);
+      border-color: var(--eos-border);
+    }
+    .btn-toolbar-accent {
+      border: 1px solid var(--eos-accent);
+      background: var(--eos-accent);
+      color: var(--eos-btn-on-accent);
+      font-weight: 700;
+    }
+    .btn-toolbar-accent:hover,
+    .btn-toolbar-accent:focus {
+      background: var(--eos-accent-hover);
+      color: var(--eos-btn-on-accent);
+      border-color: var(--eos-accent-hover);
+      box-shadow: 0 2px 6px rgba(13, 115, 119, 0.25);
+    }
+    .btn-primary {
+      background: var(--eos-accent);
+      border-color: var(--eos-accent);
+      color: var(--eos-btn-on-accent);
+      font-weight: 600;
+    }
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+      background: var(--eos-accent-hover);
+      border-color: var(--eos-accent-hover);
+      color: var(--eos-btn-on-accent);
+    }
+    .btn-primary:disabled {
+      background: #94a3b8;
+      border-color: #94a3b8;
+      color: #f8fafc;
+    }
+    .btn-success {
+      background: var(--eos-success);
+      border-color: var(--eos-success);
+      color: var(--eos-btn-on-accent);
+      font-weight: 600;
+    }
+    .btn-success:hover, .btn-success:focus, .btn-success:active {
+      background: #047857;
+      border-color: #047857;
+      color: var(--eos-btn-on-accent);
+    }
+    .btn-success:disabled {
+      background: #94a3b8;
+      border-color: #94a3b8;
+      color: #f8fafc;
+    }
+    .btn-outline-secondary {
+      border-color: var(--eos-border);
+      color: var(--eos-muted);
+    }
+    .btn-outline-secondary:hover {
+      background: var(--eos-surface2);
+      border-color: var(--eos-accent);
+      color: var(--eos-accent);
+    }
+
+    /* 分頁籤 */
+    .nav-tabs { border-bottom-color: var(--eos-border); }
+    .nav-tabs .nav-link {
+      color: var(--eos-btn-ghost);
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 6px 6px 0 0;
+      font-weight: 500;
+    }
+    .nav-tabs .nav-link:hover {
+      color: var(--eos-accent-hover);
+      background: var(--eos-accent-soft);
+      border-color: transparent;
+    }
+    .nav-tabs .nav-link.active {
+      color: var(--eos-accent-hover);
+      background: var(--eos-surface);
+      border-bottom-color: var(--eos-accent);
+      font-weight: 600;
+    }
+
+    /* 提示訊息（toast / alert） */
+    .alert-secondary {
+      background: var(--eos-surface2);
+      border-color: var(--eos-border);
+      color: var(--eos-muted);
+    }
+    .alert-info {
+      background: var(--eos-accent-soft);
+      border-color: #99d5d7;
+      color: #0f4c5c;
+    }
+    .alert-success {
+      background: var(--eos-success-soft);
+      border-color: #a7f3d0;
+      color: #065f46;
+    }
+    .alert-danger {
+      background: var(--eos-danger-soft);
+      border-color: #fecaca;
+      color: var(--eos-danger);
+    }
+
+    /* EOS service-verification-panel */
+    .eos-svp-root { position: relative; display: inline-block; }
+    .eos-svp-toggle {
+      white-space: nowrap;
+      border: 1px solid var(--eos-accent);
+      background: var(--eos-accent);
+      color: var(--eos-btn-on-accent);
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .eos-svp-toggle:hover {
+      background: var(--eos-accent-hover);
+      border-color: var(--eos-accent-hover);
+      color: var(--eos-btn-on-accent);
+      box-shadow: 0 2px 6px rgba(13, 115, 119, 0.25);
+    }
+    .eos-svp-dropdown {
+      position: absolute; right: 0; top: calc(100% + 6px); z-index: 1050;
+      width: min(420px, 92vw); max-height: 70vh; overflow: auto;
+      background: var(--eos-surface);
+      border: 1px solid var(--eos-border);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+    }
+    .eos-svp-dropdown-head {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--eos-border);
+      background: linear-gradient(135deg, var(--eos-accent-soft) 0%, var(--eos-surface) 100%);
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .eos-svp-dropdown-head strong { color: var(--eos-text-strong); }
+    .eos-svp-dropdown-head .muted { color: var(--eos-muted); }
+    .eos-svp-dropdown-body { padding: 8px 12px 4px; }
+    .eos-svp-group { margin-bottom: 10px; }
+    .eos-svp-group h6 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--eos-accent-hover);
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+    .eos-svp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .eos-svp-chip {
+      appearance: none;
+      border: 1px solid var(--eos-border);
+      background: var(--eos-surface2);
+      color: var(--eos-text-label);
+      font-weight: 500;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .eos-svp-chip:hover {
+      border-color: var(--eos-accent);
+      background: var(--eos-accent-soft);
+      color: var(--eos-accent-hover);
+    }
+    .eos-svp-chip.optional { border-style: dashed; color: var(--eos-muted); }
+    .eos-svp-dropdown-foot {
+      padding: 8px 12px 10px;
+      border-top: 1px solid var(--eos-border);
+      display: flex; gap: 12px;
+      font-size: 0.82rem;
+      background: var(--eos-surface2);
+    }
+    .eos-svp-dropdown-foot a { color: var(--eos-accent-hover); font-weight: 500; text-decoration: none; }
+    .eos-svp-dropdown-foot a:hover { text-decoration: underline; }
+    .eos-svp-blueprint { font-weight: 600; }
   </style>
 </head>
 <body>
 <!-- 靜態 Demo 入口（有前端必做；與 Console StartupInfoLogger 對齊） -->
 <div class="container py-3" id="demo-entry" data-eos-demo-entry="true">
-  <div class="card border-success mb-0">
+  <div class="card demo-entry-card mb-0">
     <div class="card-header d-flex justify-content-between align-items-center">
       <span>Demo 入口 · :8095</span>
       <span class="badge badge-up" id="health-badge">health …</span>
     </div>
-    <div class="card-body link-grid small">
+    <div class="card-body link-grid">
       <div class="row">
         <div class="col-md-6">
-          <p class="muted mb-2">後端 / 工具</p>
+          <p class="link-grid-section-title mb-2">後端 / 工具</p>
           <ul class="list-unstyled mb-0">
-            <li><a href="/actuator/health" target="_blank" rel="noopener"><strong>健康檢查</strong> /actuator/health</a></li>
-            <li><a href="/actuator/info" target="_blank" rel="noopener">應用資訊 /actuator/info</a></li>
-            <li><a href="/swagger-ui.html" target="_blank" rel="noopener">Swagger UI</a></li>
-            <li><a href="/v3/api-docs" target="_blank" rel="noopener">OpenAPI JSON</a></li>
-            <li><a href="/h2-console" target="_blank" rel="noopener">H2 Console</a></li>
+            <li><a href="/actuator/health" target="_blank" rel="noopener"><strong>健康檢查</strong><span class="link-path">/actuator/health</span></a></li>
+            <li><a href="/actuator/info" target="_blank" rel="noopener"><strong>應用資訊</strong><span class="link-path">/actuator/info</span></a></li>
+            <li><a href="/swagger-ui.html" target="_blank" rel="noopener"><strong>Swagger UI</strong></a></li>
+            <li><a href="/v3/api-docs" target="_blank" rel="noopener"><strong>OpenAPI JSON</strong><span class="link-path">/v3/api-docs</span></a></li>
+            <li><a href="/h2-console" target="_blank" rel="noopener"><strong>H2 Console</strong></a></li>
           </ul>
         </div>
         <div class="col-md-6">
-          <p class="muted mb-2">Automation / L1 UI Smoke</p>
+          <p class="link-grid-section-title mb-2">Automation / L1 UI Smoke</p>
           <ul class="list-unstyled mb-2">
             <li>
               <a href="/test/runner.html"><strong>L1 UI Smoke Runner</strong></a>
-              — 點 <code>RUN TESTING</code>（RDBS-001～006）
+              <span class="link-hint"> — 點 <code>RUN TESTING</code>（RDBS-001～006）</span>
             </li>
           </ul>
-          <p class="muted mb-0">
+          <p class="link-note mb-0">
             終端可見瀏覽器：<code>.\docs\run-ui-smoke.ps1 -Headed</code><br />
             驗端點：<code>.\docs\verify-runner-served.ps1</code>
           </p>
@@ -76,13 +467,35 @@
       <h1 class="h3 mb-1">TradingRDBS</h1>
       <p class="muted mb-0">第三正規化（3NF）· Account(1) → Order(N) → Symbol(1)</p>
     </div>
-    <div>
-      <a href="/test/runner.html" class="btn btn-sm btn-outline-success me-1">UI Smoke</a>
-      <a href="/swagger-ui.html" class="btn btn-sm btn-outline-secondary me-1" target="_blank">API</a>
-      <a href="/h2-console" class="btn btn-sm btn-outline-secondary me-1" target="_blank">H2</a>
-      <button class="btn btn-sm btn-outline-info" @click="refreshAll" :disabled="loading">
+    <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+      <div id="eos-svp-mount"></div>
+      <a href="/blueprint/" class="btn btn-sm btn-toolbar-accent">系統運作藍圖</a>
+      <span v-if="isLoggedIn" class="badge badge-user">{{ username || '已登入' }}</span>
+      <button v-if="isLoggedIn" class="btn btn-sm btn-toolbar-eos" @click="logout">登出</button>
+      <a href="/test/runner.html" class="btn btn-sm btn-toolbar-eos">UI Smoke</a>
+      <a href="/swagger-ui.html" class="btn btn-sm btn-toolbar-eos" target="_blank">API</a>
+      <a href="/h2-console" class="btn btn-sm btn-toolbar-eos" target="_blank">H2</a>
+      <button v-if="isLoggedIn" class="btn btn-sm btn-toolbar-eos" @click="refreshAll" :disabled="loading">
         <i class="bi bi-arrow-clockwise"></i> 重新整理
       </button>
+    </div>
+  </div>
+
+  <div v-if="!isLoggedIn" class="card mb-4">
+    <div class="card-header">OAuth 登入 · Bearer JWT</div>
+    <div class="card-body row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label">username</label>
+        <input v-model="loginForm.username" class="form-control" autocomplete="username" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">password</label>
+        <input v-model="loginForm.password" type="password" class="form-control" autocomplete="current-password" />
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary w-100" @click="login" :disabled="loading">登入</button>
+        <p class="muted small mb-0 mt-2">示範帳：demo/demo123 或 admin/admin123</p>
+      </div>
     </div>
   </div>
 
@@ -92,14 +505,16 @@
 
   <div v-if="message" class="alert" :class="messageType">{{ message }}</div>
 
-  <ul class="nav nav-tabs mb-3 border-secondary">
+  <div v-if="!isLoggedIn" class="alert alert-secondary">請先登入以操作帳戶／標的／委託 API。</div>
+
+  <ul v-show="isLoggedIn" class="nav nav-tabs mb-3">
     <li class="nav-item"><button class="nav-link" :class="{active: tab==='accounts'}" @click="tab='accounts'">帳戶</button></li>
     <li class="nav-item"><button class="nav-link" :class="{active: tab==='symbols'}" @click="tab='symbols'">標的</button></li>
     <li class="nav-item"><button class="nav-link" :class="{active: tab==='orders'}" @click="tab='orders'">委託</button></li>
   </ul>
 
   <!-- Accounts -->
-  <div v-show="tab==='accounts'" class="row g-4">
+  <div v-show="isLoggedIn && tab==='accounts'" class="row g-4">
     <div class="col-lg-4">
       <div class="card">
         <div class="card-header">新增帳戶 (RDBS-001)</div>
@@ -129,7 +544,7 @@
                 <td>{{ a.id }}</td>
                 <td><code>{{ a.accountNo }}</code></td>
                 <td>{{ a.ownerName }}</td>
-                <td><button class="btn btn-sm btn-outline-info" @click.stop="loadAccountDetail(a.id)">委託</button></td>
+                <td><button class="btn btn-sm btn-toolbar-eos" @click.stop="loadAccountDetail(a.id)">委託</button></td>
               </tr>
             </tbody>
           </table>
@@ -158,7 +573,7 @@
   </div>
 
   <!-- Symbols -->
-  <div v-show="tab==='symbols'" class="row g-4">
+  <div v-show="isLoggedIn && tab==='symbols'" class="row g-4">
     <div class="col-lg-4">
       <div class="card">
         <div class="card-header">新增標的 (RDBS-002)</div>
@@ -184,7 +599,7 @@
                 <td><code>{{ s.ticker }}</code></td>
                 <td>{{ s.companyName }}</td>
                 <td>{{ s.exchangeCode }}</td>
-                <td><button class="btn btn-sm btn-outline-warning" @click="filterOrdersBySymbol(s.id)">查委託</button></td>
+                <td><button class="btn btn-sm btn-toolbar-eos" @click="filterOrdersBySymbol(s.id)">查委託</button></td>
               </tr>
             </tbody>
           </table>
@@ -194,7 +609,7 @@
   </div>
 
   <!-- Orders -->
-  <div v-show="tab==='orders'" class="row g-4">
+  <div v-show="isLoggedIn && tab==='orders'" class="row g-4">
     <div class="col-lg-4">
       <div class="card">
         <div class="card-header">新增委託 (RDBS-003)</div>
@@ -227,7 +642,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <span>委託列表 {{ orderFilterLabel }}</span>
-          <button v-if="orderFilter" class="btn btn-sm btn-outline-secondary" @click="clearOrderFilter">顯示全部</button>
+          <button v-if="orderFilter" class="btn btn-sm btn-toolbar-eos" @click="clearOrderFilter">顯示全部</button>
         </div>
         <div class="table-responsive">
           <table class="table table-sm mb-0">
@@ -251,6 +666,7 @@
     </div>
   </div>
 </div>
+<script src="/service-verification-panel.js"></script>
 <script type="module" src="/app.js"></script>
 </body>
 </html>

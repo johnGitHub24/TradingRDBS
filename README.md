@@ -1,4 +1,4 @@
-# TradingRDBS
+﻿# TradingRDBS
 
 關聯式資料庫練習專案：**第三正規化（3NF）** 與 **Account(1) → Order(N) → Symbol(1)** JPA 映射。
 
@@ -6,10 +6,13 @@
 
 | 文件 | 說明 |
 |------|------|
+| [docs/codeGraphic.html](docs/codeGraphic.html) | Tab architecture view (non-authoritative) |
 | [TradingRDBS 規格書.md](TradingRDBS%20規格書.md) | 主規格 |
 | [docs/資料庫設計.md](docs/資料庫設計.md) | ER、3NF 說明、反模式對照 |
 | [docs/architecture.md](docs/architecture.md) | 分層架構 |
-| [docs/testing.md](docs/testing.md) | Case RDBS-001～006、fixture、Smoke 腳本 |
+| [docs/testing.md](docs/testing.md) | Case RDBS-001～006、AUTH-001～003、fixture、Smoke 腳本 |
+| [docs/portals/service-links.html](docs/portals/service-links.html) | 服務驗證總表（manifest 產生） |
+| Header「系統檢測」Panel + [/blueprint/](http://localhost:8095/blueprint/) | 觀測／API／文件／測試快捷（bootRun 後） |
 | [docs/scripts/README.md](docs/scripts/README.md) | Demo-ready／Release 腳本目錄 |
 | [docs/portals/service-links.html](docs/portals/service-links.html) | 服務連結（與 Console／Demo 入口同源） |
 | [CLAUDE.md](CLAUDE.md) | AI 薄規則 |
@@ -19,7 +22,7 @@
 ```powershell
 .\scripts\check.ps1
 .\gradlew.bat bootRun          # 終端／IntelliJ 請用 Gradle bootRun
-# 瀏覽器 → http://localhost:8095/
+# 瀏覽器 → http://localhost:8095/（先登入 demo/demo123 或 admin/admin123）
 ```
 
 > **IntelliJ：** 請用 Run → **bootRun (Gradle)**，**勿**對 `TradingRdbsApplication.java` 按綠箭頭（Windows 易 `0xC0000005`）。見 [docs/IntelliJ-IDE-啟動設定.md](docs/IntelliJ-IDE-啟動設定.md)。
@@ -48,6 +51,7 @@
 
 | URL | 說明 |
 |-----|------|
+| [docs/codeGraphic.html](docs/codeGraphic.html) | Tab architecture view (non-authoritative) |
 | http://localhost:8095/ | **Vue 3 Demo**（帳戶／標的／委託 CRUD） |
 | http://localhost:8095/test/runner.html | UI Smoke（RDBS-001～006） |
 | http://localhost:8095/h2-console | H2（JDBC: `jdbc:h2:mem:rdbs`，sa／空白） |
@@ -67,6 +71,7 @@ accounts (1) ──< orders >── (1) symbols
 
 | Method | Path | 說明 |
 |--------|------|------|
+| [docs/codeGraphic.html](docs/codeGraphic.html) | Tab architecture view (non-authoritative) |
 | POST | `/api/v1/accounts` | 建立帳戶 |
 | GET | `/api/v1/accounts/{id}` | 帳戶＋委託列表 |
 | POST | `/api/v1/symbols` | 建立標的 |
@@ -77,3 +82,4 @@ accounts (1) ──< orders >── (1) symbols
 ## Stack
 
 Spring Boot 3.2 · Java 21 · Spring Data JPA · H2 · springdoc-openapi
+

@@ -27,16 +27,30 @@ management:
       exposure:
         include: health,info
 
+app:
+  jwt:
+    secret: ${JWT_SECRET:TradingRDBS-dev-jwt-secret-at-least-32-bytes-long}
+    expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    password: ${ADMIN_PASSWORD:admin123}
+  demo:
+    username: ${DEMO_USERNAME:demo}
+    password: ${DEMO_PASSWORD:demo123}
+
 startup:
   info:
     enabled: true
     project-name: TradingRDBS
     frontend: static
-    auth: false
+    auth: true
     h2: true
     api-docs: true
     probe: true
     home-path: /
+    extra-paths:
+      - /blueprint/
+      - /docs/portals/service-links.html
 
 springdoc:
   swagger-ui:

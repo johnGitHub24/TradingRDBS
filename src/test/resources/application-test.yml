@@ -1,0 +1,14 @@
+app:
+  jwt:
+    secret: TradingRDBS-test-jwt-secret-at-least-32-bytes
+    expiration-ms: 3600000
+  admin:
+    username: admin
+    password: admin123
+  demo:
+    username: demo
+    password: demo123
+
+startup:
+  info:
+    enabled: false
