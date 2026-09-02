@@ -4,6 +4,10 @@
 公版：`EngineeringOS/eos-minimal/`
 權威規格：[TradingRDBS 規格書.md](TradingRDBS%20規格書.md)
 
+## EOS 採用模式
+- eos-adoption: demo-ready-full
+- demo-presentation: on    # docs/eos-demo.profile.json — 路徑 A 金樣
+
 ## 與公版差異
 
 - Backend port: **8095**

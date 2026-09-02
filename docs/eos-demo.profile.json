@@ -1,0 +1,6 @@
+{
+  "profile": "demo-ready-full",
+  "presentationLayer": true,
+  "demoPresentation": "on",
+  "_comment": "TradingRDBS 金樣：教學展示層開啟（路徑 A）。Template 專案預設 off，日後改 on 即可。"
+}

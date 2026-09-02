@@ -81,11 +81,31 @@ tasks.register('aggregateJavadoc', Javadoc) {
 
 /**
  * 【職責】把 Javadoc／Gradle HTML 測試報告覆寫進 bootRun classpath（避免 404）。
- * 【技巧】優先 build/reports；無則 fallback src；check 後須執行本 task 或 bootRun（會自動依賴）。
+ * 【開關】docs/eos-demo.profile.json presentationLayer；見 demo-presentation-switch.md
  */
+def eosDemoPresentationOn = {
+    def prop = findProperty('eosDemoPresentation')
+    if (prop != null) {
+        return !['false', '0', 'off'].contains(prop.toString().toLowerCase())
+    }
+    def profileFile = file('docs/eos-demo.profile.json')
+    if (!profileFile.exists()) {
+        profileFile = file('eos-demo.profile.json')
+    }
+    if (profileFile.exists()) {
+        def text = profileFile.text
+        if (text =~ /"demoPresentation"\s*:\s*"on"/) return true
+        if (text =~ /"demoPresentation"\s*:\s*"off"/) return false
+        if (text =~ /"presentationLayer"\s*:\s*true/) return true
+        if (text =~ /"presentationLayer"\s*:\s*false/) return false
+    }
+    return false
+}()
+
 tasks.register('syncDemoStaticToClasspath') {
     group = 'documentation'
     description = 'Mirror Javadoc + test HTML into build/resources/main/static/docs for bootRun'
+    onlyIf { eosDemoPresentationOn }
 
     doLast {
         def classpathDocs = file("${layout.buildDirectory.get().asFile}/resources/main/static/docs")
