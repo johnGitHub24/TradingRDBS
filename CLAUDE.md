@@ -1,6 +1,6 @@
-# TradingRDBS — 專案規則（薄）
+﻿# TradingRDBS — 專案規則（薄）
 
-繼承：EngineeringOS eos-minimal @ **0.1.13**
+繼承：EngineeringOS eos-minimal @ **0.1.29**
 公版：`EngineeringOS/eos-minimal/`
 權威規格：[TradingRDBS 規格書.md](TradingRDBS%20規格書.md)
 
