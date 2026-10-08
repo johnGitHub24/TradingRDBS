@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 【職責】同埠 Demo 靜態資源路由（藍圖、文件入口）。
- * 【技巧】Spring Boot 子目錄 static 不自動解析 index；/blueprint/ 需明確導向。
+ * <p>【技巧】Spring Boot 子目錄 static 不自動解析 index；/blueprint/ 需明確導向。
  */
 @Configuration
 public class DemoStaticConfig implements WebMvcConfigurer {

@@ -10,8 +10,8 @@ import java.nio.file.Paths;
 
 /**
  * 【職責】從 {@code docs/test-data/{domain}/{caseId}.json} 載入測試素材。
- * 【技巧】路徑相對專案根；單元與整合層共用同一份 JSON（EOS {@code testing.md} §Fixture）。
- * 【概念】Case ID 與檔名對齊，契約變更時只改 JSON + 成對測試。
+ * <p>【技巧】路徑相對專案根；單元與整合層共用同一份 JSON（EOS {@code testing.md} §Fixture）。
+ * <p>【概念】Case ID 與檔名對齊，契約變更時只改 JSON + 成對測試。
  */
 public final class RdbsTestFixtures {
 

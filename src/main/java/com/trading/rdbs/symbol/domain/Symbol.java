@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * 【職責】可交易標的（股票代碼）實體；3NF 中標的屬性只依賴 {@code id}。
- * 【技巧】{@code ticker} 為業務唯一鍵；{@code company_name}、{@code exchange_code} 直接依賴主鍵。
- * 【概念】不在 {@code orders} 表冗餘 {@code ticker}／{@code company_name}。
+ * <p>【技巧】{@code ticker} 為業務唯一鍵；{@code company_name}、{@code exchange_code} 直接依賴主鍵。
+ * <p>【概念】不在 {@code orders} 表冗餘 {@code ticker}／{@code company_name}。
  */
 @Entity
 @Table(name = "symbols", uniqueConstraints = @UniqueConstraint(name = "uk_symbols_ticker", columnNames = "ticker"))

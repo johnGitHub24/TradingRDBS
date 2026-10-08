@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * 【職責】無狀態 JWT OAuth Bearer 安全過濾鏈。
- * 【概念】公開 auth／靜態／文件；業務 API 需 Bearer token。
+ * <p>【概念】公開 auth／靜態／文件；業務 API 需 Bearer token。
  */
 @Configuration
 public class SecurityConfig {

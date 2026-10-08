@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * 【職責】Demo-ready 靜態資產整合探針（系統檢測 Panel + 藍圖）。
- * 【概念】對齊 EOS service-verification-panel.md L0 閉環。
+ * <p>【概念】對齊 EOS service-verification-panel.md L0 閉環。
  */
 @Tag("integration")
 @SpringBootTest

@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * 【職責】REST 整合層；Case ID RDBS-001～006 與 OrderServiceTest 成對。
- * 【技巧】Request body 自 {@code docs/test-data/} 載入；API 需 OAuth Bearer JWT。
+ * <p>【技巧】Request body 自 {@code docs/test-data/} 載入；API 需 OAuth Bearer JWT。
  */
 @Tag("integration")
 @SpringBootTest

@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 
 /**
  * 【職責】委託單實體；串接 Account(1) 與 Symbol(1) 的 N 端。
- * 【技巧】只存 {@code account_id}、{@code symbol_id} FK 及委託自身欄位（side/qty/price）。
- * 【概念】3NF：非鍵欄位僅依賴主鍵 {@code id}，不複製帳戶名或股票名稱。
+ * <p>【技巧】只存 {@code account_id}、{@code symbol_id} FK 及委託自身欄位（side/qty/price）。
+ * <p>【概念】3NF：非鍵欄位僅依賴主鍵 {@code id}，不複製帳戶名或股票名稱。
  */
 @Entity
 @Table(name = "orders", indexes = {

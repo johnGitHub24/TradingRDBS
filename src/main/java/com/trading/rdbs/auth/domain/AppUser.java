@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * 【職責】OAuth 登入帳號（app_users）；與 3NF 交易帳戶 accounts 分表。
- * 【概念】認證身分與業務 Account 解耦，避免把密碼混入交易模型。
+ * <p>【概念】認證身分與業務 Account 解耦，避免把密碼混入交易模型。
  */
 @Entity
 @Table(name = "app_users")

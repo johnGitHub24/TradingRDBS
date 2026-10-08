@@ -17,8 +17,8 @@ import java.util.List;
 
 /**
  * 【職責】應用就緒後於 Console 印出常用 URL，並對 HTTP 入口探測 UP／DOWN。
- * 【技巧】聽 {@link ApplicationReadyEvent}；UTF-8 {@link PrintStream}；讀 {@code startup.info.*}。
- * 【概念】L0 Demo-ready：bootRun 後 Console 必見可驗證連結（EOS demo-ready-guide）。
+ * <p>【技巧】聽 {@link ApplicationReadyEvent}；UTF-8 {@link PrintStream}；讀 {@code startup.info.*}。
+ * <p>【概念】L0 Demo-ready：bootRun 後 Console 必見可驗證連結（EOS demo-ready-guide）。
  */
 @Component
 public class StartupInfoLogger implements ApplicationListener<ApplicationReadyEvent> {

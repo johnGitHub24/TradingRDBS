@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * 【職責】交易帳戶實體；3NF 中帳戶屬性只依賴 {@code id}。
- * 【技巧】{@code @OneToMany(mappedBy="account")} 為 1 端；訂單表以 {@code account_id} FK 指向此表。
- * 【概念】不在 {@code orders} 表冗餘 {@code owner_name}——避免違反 3NF 的遞移相依。
+ * <p>【技巧】{@code @OneToMany(mappedBy="account")} 為 1 端；訂單表以 {@code account_id} FK 指向此表。
+ * <p>【概念】不在 {@code orders} 表冗餘 {@code owner_name}——避免違反 3NF 的遞移相依。
  */
 @Entity
 @Table(name = "accounts", uniqueConstraints = @UniqueConstraint(name = "uk_accounts_account_no", columnNames = "account_no"))
